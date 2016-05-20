@@ -14,11 +14,17 @@
   service: name=docker state=started enabled=yes
 
 - block:
+  - debug:
+      msg: "{{ environment }}"
+  - debug:
+      msg: "{{ proxy_env.http_proxy }}"
+
   - name: Edit docker configuration file
-    ini_file: dest=/usr/lib/systemd/system/docker.service section=Service option=Environment value="\"HTTP_PROXY={{ http_proxy }}\"" mode=0644 backup=yes
+    ini_file: dest=/usr/lib/systemd/system/docker.service section=Service option=Environment value="\"HTTP_PROXY={{ proxy_env.http_proxy }}\"" mode=0644 backup=yes
 
   - name: Daemon Reload for docker
     shell: systemctl daemon-reload
 
   - name: Restart docker
     service: name=docker state=restarted
+  when: proxy_env.http_proxy is defined
