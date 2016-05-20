@@ -4,7 +4,7 @@
 
   roles:
     - { role: openstack, when: "vtype == 'OpenStack'" }
-    #- { role: dc, when: "vtype == 'DC'" }
+    - { role: dc, when: "vtype == 'DC'" }
     #- { role: aws, when: "vtype == 'AWS'" }
     #- { role: azure, when: "vtype == 'Azure'" }
     #- { role: phy_vm, when: "vtype == 'VM'" }
