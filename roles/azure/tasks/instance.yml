@@ -1,0 +1,35 @@
+# From Ansible 2.1
+- name: Destroy Azure Deploy
+  azure_rm_deployment:
+    state: absent
+    subscription_id: "{{ subid }}"
+    resource_group_name: "{{ resg }}"
+
+- name: Create Azure Deploy
+  azure_rm_deployment:
+    state: present
+    subscription_id: "{{ subid }}"
+    resource_group_name: "{{ resg }}"
+    parameters:
+      newStorageAccountName:
+        value: devopsclestorage1
+      adminUsername:
+        value: devopscle
+      dnsNameForPublicIP:
+        value: devopscleazure
+      location:
+        value: West JP
+      vmSize:
+        value: Basic_A0
+      vmName:
+        value: "{{ hname }}"
+      sshKeyData:
+        value: YOUR_SSH_PUBLIC_KEY
+    template_link: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json'
+  register: azure
+
+- name: Add new instance to host group
+  add_host: hostname={{ item['ips'][0].public_ip }} groupname=launched
+  with_items: azure.instances
+
+- wait_for: delay=5 path=/etc/hosts timeout=2000 host="{{ item['ips'][0].public_ip }}" state=started

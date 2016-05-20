@@ -1,0 +1,5 @@
+- name: Copy ansible repo
+  copy: src=toshio-ansible-upstream.repo dest=/etc/yum.repos.d/toshio-ansible-upstream.repo owner=root group=root mode=0644
+
+- name: Install Ansible package
+  yum: name=ansible state=latest

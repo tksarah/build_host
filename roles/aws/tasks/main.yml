@@ -1,0 +1,4 @@
+- name: Change hostname
+  hostname: name="{{ hname }}"
+
+- include: instance.yml

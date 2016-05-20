@@ -1,0 +1,17 @@
+- name: Stop and Disabled services
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+    - postfix
+    - wpa_supplicant
+
+#- name: Copy resolv.conf
+#  template: src=resolv.conf.j2 dest=/etc/resolv.conf
+#  when: vtype == "OpenStack"
+
+- name: Install EPEL-Package for CentOS 7
+  yum: name=epel-release state=present
+
+- name: Install Packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - git

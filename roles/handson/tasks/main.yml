@@ -1,0 +1,7 @@
+- name: Download Git Repo for Lesson1
+  git: repo=https://github.com/tksarah/ansible_lesson1.git dest=/root/ansible_lesson1
+  when: lesson == "1"
+
+- name: Download Git Repo for Lesson2
+  git: repo=https://github.com/tksarah/ansible_lesson2.git dest=/root/ansible_lesson2
+  when: lesson == "2"

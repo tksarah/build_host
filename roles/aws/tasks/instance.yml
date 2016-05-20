@@ -1,0 +1,24 @@
+- name: Create AWS Instance
+  ec2:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ image }}"
+    region: "{{ region }}"
+    group: "{{ group }}"
+    count: 1
+    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    assign_public_ip: yes
+    wait: yes
+    instance_ids: "{{ instance_ids }}"
+    state: "{{ state }}"
+  register: ec2
+
+- name: Add new instance to host group
+  add_host: hostname="{{ item.public_ip }}" groupname=launched
+  with_items: ec2.instances
+
+- name: Wait for SSH to come up
+  wait_for: host="{{ item.public_dns_name }}" port=22 delay=60 timeout=320 state=started
+  with_items: ec2.instances

@@ -1,0 +1,39 @@
+---
+- hosts: "{{ target }}"
+  gather_facts: no
+
+  roles:
+    - { role: openstack, when: "vtype == 'OpenStack'" }
+    - { role: dc, when: "vtype == 'DC'" }
+    - { role: aws, when: "vtype == 'AWS'" }
+    - { role: azure, when: "vtype == 'Azure'" }
+    - { role: phy_vm, when: "vtype == 'VM'" }
+
+# OpenStack and AWS
+- hosts: launched
+  gather_facts: no
+  
+  become: true
+  become_user: root
+
+  roles:
+    - common
+    - ansible
+    - docker
+
+    - handson
+
+  environment:
+    http_proxy: 'http://tie304410:Suntake37@192.168.166.1:8080'
+    https_proxy: 'http://tie304410:Suntake37@192.168.166.1:8080'
+
+# DigitalOcean
+- hosts: c_launched
+  gather_facts: no
+
+  roles:
+    - common
+    - ansible
+    - docker
+
+    - handson

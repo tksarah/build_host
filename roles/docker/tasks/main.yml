@@ -1,0 +1,24 @@
+- name: Copy docker repo
+  copy: src=files/docker.repo dest=/etc/yum.repos.d/docker.repo owner=root group=root mode=0644
+
+- name: Install Docker package
+  yum: name={{ item }} state=latest
+  with_items:
+    - python-pip
+    - docker-engine
+
+- name: Install docker-py
+  pip: name=docker-py
+
+- name: Start and Enable and services
+  service: name=docker state=started enabled=yes
+
+- block:
+  - name: Edit docker configuration file
+    ini_file: dest=/usr/lib/systemd/system/docker.service section=Service option=Environment value="\"HTTP_PROXY={{ http_proxy }}\"" mode=0644 backup=yes
+
+  - name: Daemon Reload for docker
+    shell: systemctl daemon-reload
+
+  - name: Restart docker
+    service: name=docker state=restarted
