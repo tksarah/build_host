@@ -25,12 +25,12 @@ Step4. 実行
 ```
 target・・・イベントリに記載したターゲット
 vtype ・・・ハンズオン環境を作るマシンが起動するインフラ（OpenStack | DC | AWS | Bare）
-hname ・・・ハンズオン環境を作るマシン名(クラウドのみ)
-lesson・・・ハンズオンのレッスン番号(1 | 2)
+hname ・・・ハンズオン環境を作るマシン名（クラウドのみ）
+lesson・・・ハンズオンのレッスン番号（1 | 2）
 
-ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack lesson=1" main.yml
+# ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack lesson=1" main.yml
 
-ansible-playbook -i hosts -e "target=bare vtype=Bare lesson=2" main.yml
+# ansible-playbook -i hosts -e "target=bare vtype=Bare lesson=2" main.yml
 ```
 以降はレッスン毎に個別の準備
 
