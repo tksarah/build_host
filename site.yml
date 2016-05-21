@@ -6,7 +6,7 @@
     - { role: openstack-office, when: "vtype == 'OpenStack' and target == 'ops'" }
     - { role: openstack-home, when: "vtype == 'OpenStack'" }
     - { role: dc, when: "vtype == 'DC'" }
-    #- { role: aws, when: "vtype == 'AWS'" }
+    - { role: aws, when: "vtype == 'AWS'" }
     #- { role: azure, when: "vtype == 'Azure'" }
 
     # For Bare Metal or VM
@@ -27,7 +27,7 @@
     - handson
   environment: "{{ proxy_env }}"
 
-# OpenStack in Home or AWS
+# OpenStack in Home
 - hosts: launched-home
   gather_facts: no
   become: true
@@ -38,8 +38,19 @@
     - docker
     - handson
 
+# AWS
+- hosts: launched-aws
+  gather_facts: no
+  become: true
+  become_user: root
+  roles:
+    - common
+    - ansible
+    - docker
+    - handson
+
 # DigitalOcean
-- hosts: c_launched
+- hosts: launched-dc
   gather_facts: no
 
   roles:

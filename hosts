@@ -6,6 +6,9 @@
 [dc]
 localhost ansible_connection=local
 
+[aws]
+localhost ansible_connection=local
+
 [bare]
 192.168.0.33 ansible_ssh_private_key_file=/home/vagrant/.ssh/id_rsa
 
