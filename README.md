@@ -5,10 +5,11 @@
 物理マシンまたは既存VM、OpenStack or DigitalOcean or AWS 上のインスタンス、これををハンズオンホストマシンとして建てる
 
 ## 使い方
-0. 対象にアクセスするための秘密鍵を keys/ に入れ 0600 にセット
-1. hostsのセット（対象に合わせる）
-Sample
+Step1. 対象にアクセスするための秘密鍵を keys/ に入れ 0600 にセット
+Step2. hostsのセット（対象に合わせる）
 ```
+;; Sample 
+
 [ops]
 192.168.100.10 ansible_ssh_private_key_file=/root/.ssh/id_rsa
 
@@ -18,9 +19,9 @@ localhost ansible_connection=local
 [bare]
 example.co.jp ansible_ssh_private_key_file=/root/.ssh/id_rsa
 ```
-2. 対象に合わせたDNS情報がある場合 group_vars 以下のファイルに記述 
+Step3. 対象に合わせたDNS情報がある場合 group_vars 以下のファイルに記述 
 
-実行
+Step4. 実行
 ```
 target・・・イベントリに記載したターゲット
 vtype ・・・ハンズオン環境を作るマシンが起動するインフラ（OpenStack | DC | AWS | Bare）
@@ -28,6 +29,8 @@ hname ・・・ハンズオン環境を作るマシン名(クラウドのみ)
 lesson・・・ハンズオンのレッスン番号(1 | 2)
 
 ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack lesson=1" main.yml
+
+ansible-playbook -i hosts -e "target=bare vtype=Bare lesson=2" main.yml
 ```
 以降はレッスン毎に個別の準備
 
