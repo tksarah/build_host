@@ -3,27 +3,40 @@
   gather_facts: no
 
   roles:
-    - { role: openstack, when: "vtype == 'OpenStack'" }
+    - { role: openstack-office, when: "vtype == 'OpenStack' and target == 'ops'" }
+    - { role: openstack-home, when: "vtype == 'OpenStack'" }
     - { role: dc, when: "vtype == 'DC'" }
     #- { role: aws, when: "vtype == 'AWS'" }
     #- { role: azure, when: "vtype == 'Azure'" }
-    #- { role: phy_vm, when: "vtype == 'VM'" }
 
-# OpenStack and AWS
-- hosts: launched
+    # For Bare Metal or VM
+    - { role: common, set_resolv: true , when: "vtype == 'Bare'"}
+    - { role: ansible, when: "vtype == 'Bare'" }
+    - { role: docker, when: "vtype == 'Bare'" }
+    - { role: handson, when: "vtype == 'Bare'" }
+
+# OpenStack in Office
+- hosts: launched-office
   gather_facts: no
-  
   become: true
   become_user: root
-
   roles:
     - common
     - ansible
     - docker
-
     - handson
-
   environment: "{{ proxy_env }}"
+
+# OpenStack in Home or AWS
+- hosts: launched-home
+  gather_facts: no
+  become: true
+  become_user: root
+  roles:
+    - { role: common, set_resolv: true }
+    - ansible
+    - docker
+    - handson
 
 # DigitalOcean
 - hosts: c_launched
@@ -33,5 +46,4 @@
     - common
     - ansible
     - docker
-
     - handson

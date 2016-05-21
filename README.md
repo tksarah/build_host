@@ -1,38 +1,73 @@
-Role Name
-=========
+# ハンズオン環境一撃プレイブック
+**１プレイ**で環境を作るPlaybook概要
 
-A brief description of the role goes here.
+## 対象
+物理マシンまたは既存VM、OpenStack or DigitalOcean or AWS 上のインスタンス、これををハンズオンホストマシンとして建てる
 
-Requirements
-------------
+## 使い方
+0. 対象にアクセスするための秘密鍵を keys/ に入れ 0600 にセット
+1. hostsのセット（対象に合わせる）
+Sample
+```
+[ops]
+192.168.100.10 ansible_ssh_private_key_file=/root/.ssh/id_rsa
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+[cloud]
+localhost ansible_connection=local
 
-Role Variables
---------------
+[bare]
+example.co.jp ansible_ssh_private_key_file=/root/.ssh/id_rsa
+```
+2. 対象に合わせたDNS情報がある場合 group_vars 以下のファイルに記述 
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+実行
+```
+target・・・イベントリに記載したターゲット
+vtype ・・・ハンズオン環境を作るマシンが起動するインフラ（OpenStack | DC | AWS | Bare）
+hname ・・・ハンズオン環境を作るマシン名(クラウドのみ)
+lesson・・・ハンズオンのレッスン番号(1 | 2)
 
-Dependencies
-------------
+ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack lesson=1" main.yml
+```
+以降はレッスン毎に個別の準備
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- [Lesson-1](https://github.com/tksarah/ansible_lesson1)
+- [Lesson-2](https://github.com/tksarah/ansible_lesson2)
 
-Example Playbook
-----------------
+## Playbook がヤルこと 
+- 対象にインフラストラクチャ上にVMを起動
+- 起動したVMに対して各種必要パッケージや必要設定を実施
+- 指定したレッスンツールを /root へダウンロード
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## 事前準備（物理マシンや既存VMの場合）
+- CentOS 7 以上のマシン用意しとく
+- Ansibleを実行するホストからノンパスで入れるようにSSH公開鍵を登録しとく ( root )
+- Ansible がリモートログインするユーザを一般ユーザとする時、sudo をパスワード無しで入れるようにしておく
 
-License
--------
+## 事前準備（OpenStackの場合）
+- OpenStackのコントローラノードにSSHが通るようにPlayを実行する公開鍵を登録しとく
+- SSHキーペアを作成し、 OpenStackのVMを作るときに指定する公開鍵をOpenStackに登録しておく ( keys/hoge.pub )
+- Ansible がリモートアクセスするユーザを一般ユーザとする時、sudo をパスワード無しで入れるようにしておく
 
-BSD
+### OpenStack 関連パラメータ確認と指定 : openstack role
+- コントローラノードにアクセスして操作する認証情報 ( auth_url , username , password , project_name )
+- どのOpenStackのフレーバ（スペック）を使うか ( flavor id )
+- どのOpenStackのイメージを使うか ( image id )
+- どのOpenStackのネットワークを使うか ( network id )
+- どのキーペアを使うか ( keypair )
 
-Author Information
-------------------
+## 事前準備（DigitalOceanの場合）
+- APIv2 のトークンを取得し、登録しておく
+- rootログイン用のSSH公開鍵を予め作って登録しておく
+- 秘密鍵は手元に用意、Playbook実行時に利用する keys/hoge.key
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+### DigitalOcean 関連パラメータ確認と指定 : dc role
+- イメージ、リージョン、ホスト名、サイズ（スペック）、を確認して指定しておく
+
+## 事前準備（AWSの場合）
+### AWS 関連パラメータ確認と指定
+
+## 事前準備（vSphereの場合）
+### vSphere 関連パラメータ確認と指定
+

@@ -4,9 +4,13 @@
     - postfix
     - wpa_supplicant
 
-#- name: Copy resolv.conf
-#  template: src=resolv.conf.j2 dest=/etc/resolv.conf
-#  when: vtype == "OpenStack"
+- name: Required libselinux-python for Bare Metal
+  yum: name=libselinux-python state=latest
+  when: vtype == "Bare"
+
+- name: Copy resolv.conf
+  template: src=resolv.conf.j2 dest=/etc/resolv.conf
+  when: set_resolv
 
 - name: Install EPEL-Package for CentOS 7
   yum: name=epel-release state=present

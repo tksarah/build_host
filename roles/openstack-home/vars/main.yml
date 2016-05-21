@@ -1,0 +1,9 @@
+### Home
+url: "http://192.168.0.3:5000/v2.0/"
+myuser: "demo"
+mypass: "demo"
+tenant: "demo"
+seckey: "cloud-key"
+image: "a6bd1340-9e98-4adb-b2a3-ab04530ed9dc"
+net_id: "135a1c3b-3549-4a78-b6ef-014ff2196ae4"
+flavor: "2"
