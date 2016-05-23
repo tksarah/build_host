@@ -4,7 +4,7 @@
 
   roles:
     - { role: openstack-office, when: "vtype == 'OpenStack' and target == 'ops'" }
-    - { role: openstack-home, when: "vtype == 'OpenStack'" }
+    - { role: openstack-home, when: "vtype == 'OpenStack' and target == 'ops-home'"}
     - { role: dc, when: "vtype == 'DC'" }
     - { role: aws, when: "vtype == 'AWS'" }
     #- { role: azure, when: "vtype == 'Azure'" }
