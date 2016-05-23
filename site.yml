@@ -1,5 +1,6 @@
 ---
-- hosts: "{{ target }}"
+- name: Building Handson Host
+  hosts: "{{ target }}"
   gather_facts: no
 
   roles:
@@ -15,8 +16,8 @@
     - { role: docker, when: "vtype == 'Bare'" }
     - { role: handson, when: "vtype == 'Bare'" }
 
-# OpenStack in Office
-- hosts: launched-office
+- name: OpenStack in Office
+  hosts: launched-office
   gather_facts: no
   become: true
   become_user: root
@@ -27,8 +28,8 @@
     - handson
   environment: "{{ proxy_env }}"
 
-# OpenStack in Home
-- hosts: launched-home
+- name: OpenStack in Home
+  hosts: launched-home
   gather_facts: no
   become: true
   become_user: root
@@ -38,8 +39,8 @@
     - docker
     - handson
 
-# AWS
-- hosts: launched-aws
+- name: On AWS
+  hosts: launched-aws
   gather_facts: no
   become: true
   become_user: root
@@ -49,8 +50,8 @@
     - docker
     - handson
 
-# DigitalOcean
-- hosts: launched-dc
+- name: On DigitalOcean
+  hosts: launched-dc
   gather_facts: no
 
   roles:
