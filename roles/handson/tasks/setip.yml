@@ -1,5 +1,7 @@
 - name: Set IP address
   replace: dest={{ item }} regexp='HOSTADDR' replace="{{ inventory_hostname }}"
   with_items:
-    - "/root/ansible_lesson{{ lesson }}/dockerfile/create_proxy.sh"
-    - "/root/ansible_lesson{{ lesson }}/lesson{{ lesson }}_files/tools/setup.sh"
+    - "/root/ansible_lesson/roles/lesson1/files/dockerfile/create_proxy.sh"
+    - "/root/ansible_lesson/roles/lesson2/files/dockerfile/create_proxy.sh"
+    - "/root/ansible_lesson/roles/lesson1/files/lesson1_files/tools/setup.sh"
+    - "/root/ansible_lesson/roles/lesson2/files/lesson2_files/tools/setup.sh"
