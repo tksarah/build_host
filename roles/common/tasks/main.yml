@@ -2,24 +2,26 @@
   hostname: name="{{ hname }}"
   when: vtype == "AWS"
   
-- name: Stop and Disabled services
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-    - postfix
-    - wpa_supplicant
-
-- name: Required libselinux-python for Bare Metal
-  yum: name=libselinux-python state=latest
-  when: vtype == "Bare"
-
 - name: Copy resolv.conf
   template: src=resolv.conf.j2 dest=/etc/resolv.conf
   when: set_resolv
 
-- name: Install EPEL-Package for CentOS 7
-  yum: name=epel-release state=present
+- name: Required libselinux-python for Bare Metal
+  yum: name=libselinux-python state=latest
+  when: vtype == "Bare" and (ansible_distribution == "CentOS" or ansible_os_family == "RedHat")
 
-- name: Install Packages
-  yum: name={{ item }} state=latest
-  with_items:
-    - git
+- block:
+    - name: Install EPEL-Package for CentOS 7
+      yum: name=epel-release state=present
+
+    - name: Install Packages
+      yum: name={{ item }} state=latest
+      with_items:
+        - git
+
+    - name: Stop and Disabled services
+      service: name={{ item }} state=stopped enabled=no
+      with_items:
+        - postfix
+        - wpa_supplicant
+  when: ansible_distribution == "CentOS" or ansible_os_family == "RedHat"
