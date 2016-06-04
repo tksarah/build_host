@@ -1,12 +1,23 @@
+---
 #- name: Copy ansible repo
 #  copy: src=toshio-ansible-upstream.repo dest=/etc/yum.repos.d/toshio-ansible-upstream.repo owner=root group=root mode=0644
 #
 #- name: Install Ansible package
 #  yum: name=ansible state=latest
 
-- name: Copy ansible 2.1 rpm for CentOS 7
-  copy: src=ansible-2.1.0.0-0.git201605262329.2399dd3.stable21.el7.centos.noarch.rpm dest=/tmp/ansible.stable21.el7.centos.noarch.rpm
+- block:
+    - name: Install software-properties-common for Ansible
+      apt: pkg=software-properties-common state=latest update_cache=yes
+    - name: Add Reposotpry
+      apt_repository: repo='ppa:ansible/ansible'
+    - name: Install ansible
+      apt: pkg=ansible state=latest update_cache=yes
+  when: ansible_distribution == "Ubuntu"
 
-- name: Install Ansible
-  yum: name=/tmp/ansible.stable21.el7.centos.noarch.rpm state=present
+- block:
+    - name: Copy ansible 2.1 rpm for CentOS 7
+      copy: src=ansible-2.1.0.0-0.git201605262329.2399dd3.stable21.el7.centos.noarch.rpm dest=/tmp/ansible.stable21.el7.centos.noarch.rpm
+    - name: Install Ansible
+      yum: name=/tmp/ansible.stable21.el7.centos.noarch.rpm state=present
+  when: ansible_distribution == "CentOS"
 

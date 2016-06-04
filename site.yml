@@ -30,14 +30,15 @@
 
 - name: OpenStack in Home
   hosts: launched-home
-  gather_facts: no
+  gather_facts: yes
   become: true
   become_user: root
   roles:
-    - { role: common, set_resolv: true }
+    - { role: common, when: "lesson is defined" , set_resolv: true }
     - ansible
-    - docker
-    - handson
+    - { role: docker ,  when: "lesson is defined" }
+    - { role: handson ,  when: "lesson is defined" }
+    - zeppelin
 
 - name: On AWS
   hosts: launched-aws
