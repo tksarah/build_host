@@ -15,9 +15,12 @@
 - name: Unarchive a file
   unarchive: src=/tmp/{{ maven_ver }}-bin.tar.gz  dest=/usr/local creates=/usr/local/{{ maven_ver }} copy=no
 
+- name: Add line /etc/hosts 
+  lineinfile: dest=/etc/hosts line="{{ inventory_hostname }}	zeppelin-node" state=present
+
 - block:
     - name: Get Zeppelin source
-      git: repo=https://github.com/apache/incubator-zeppelin.git dest=/home/{{ myuser }}/incubator-zeppelin
+      git: repo=https://github.com/apache/incubator-zeppelin.git dest=/home/{{ myuser }}/incubator-zeppelin force=yes
 
     - name: Set a maven path
       lineinfile: "dest=~/.bash_login line='export PATH=/usr/local/{{ maven_ver }}/bin:$PATH' state=present create=yes"

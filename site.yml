@@ -38,7 +38,7 @@
     - ansible
     - { role: docker ,  when: "lesson is defined" }
     - { role: handson ,  when: "lesson is defined" }
-    - zeppelin
+    #- zeppelin
 
 - name: On AWS
   hosts: launched-aws
@@ -53,10 +53,11 @@
 
 - name: On DigitalOcean
   hosts: launched-dc
-  gather_facts: no
+  gather_facts: yes
 
   roles:
     - common
     - ansible
     - docker
     - handson
+    #- zeppelin
