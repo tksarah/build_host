@@ -31,12 +31,11 @@ lesson・・・ハンズオンのレッスン番号（1 | 2）
 
 # ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack lesson=1" main.yml
 
-# ansible-playbook -i hosts -e "target=bare vtype=Bare lesson=2" main.yml
+# ansible-playbook -i hosts -e "target=bare vtype=Bare handson=ansible" main.yml
 ```
-以降はレッスン毎に個別の準備
+以降はハンズオン毎に個別の準備
 
-- [Lesson-1](https://github.com/tksarah/ansible_lesson1)
-- [Lesson-2](https://github.com/tksarah/ansible_lesson2)
+- [Lesson for Ansible](https://github.com/tksarah/ansible_lesson)
 
 ## Playbook がヤルこと 
 - 対象にインフラストラクチャ上にVMを起動
