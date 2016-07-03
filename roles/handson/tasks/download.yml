@@ -1,4 +1,7 @@
-- name: Download Git Repo for Lesson
+- name: Download Git Repo for Lesson Ansible
   git: repo=https://github.com/tksarah/ansible_lesson.git dest=/root/ansible_lesson
   when: lesson == "ansible"
+- name: Download Git Repo for Lesson Serverspec
+  git: repo=https://github.com/tksarah/serverspec_lesson.git dest=/root/serverspec_lesson
+  when: lesson == "serverspec"
 

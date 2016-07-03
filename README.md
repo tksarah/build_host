@@ -27,7 +27,7 @@ Step4. 実行
 target・・・イベントリに記載したターゲット
 vtype ・・・ハンズオン環境を作るマシンが起動するインフラ（OpenStack | DC | AWS | Bare）
 hname ・・・ハンズオン環境を作るマシン名（クラウドのみ）
-handson・・・ハンズオンの種類（今は"ansible"のみ）
+handson・・・ハンズオンの種類（ansible|serverspec）
 
 # ansible-playbook -i hosts -e "target=ops hname=demo-machine vtype=OpenStack handson=ansible" main.yml
 

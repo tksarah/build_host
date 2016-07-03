@@ -1,7 +1,15 @@
-- name: Set IP address
+- name: Set IP address for Lesson Ansible
   replace: dest={{ item }} regexp='HOSTADDR' replace="{{ inventory_hostname }}"
   with_items:
     - "/root/ansible_lesson/roles/lesson1/files/dockerfile/create_proxy.sh"
     - "/root/ansible_lesson/roles/lesson2/files/dockerfile/create_proxy.sh"
     - "/root/ansible_lesson/roles/lesson1/files/lesson1_files/tools/setup.sh"
     - "/root/ansible_lesson/roles/lesson2/files/lesson2_files/tools/setup.sh"
+  when: lesson == "ansible"
+
+- name: Set IP address for Lesson Serverspec
+  replace: dest={{ item }} regexp='HOSTADDR' replace="{{ inventory_hostname }}"
+  with_items:
+    - "/root/serverspec_lesson/roles/lesson1/files/dockerfile/create_proxy.sh"
+    - "/root/serverspec_lesson/roles/lesson1/files/lesson1_files/tools/setup.sh"
+  when: lesson == "serverspec"
